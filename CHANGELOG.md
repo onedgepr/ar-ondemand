@@ -1,3 +1,6 @@
+# 1.3.3
+
+* Fixed database uuid, jsonb type lookup errors for Rails 6 / postgres
 # 1.3.2
 
 * Select customer params, not just attributes of the model
