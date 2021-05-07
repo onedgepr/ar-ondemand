@@ -6,7 +6,7 @@ module ActiveRecord
         @column_models = model.columns.inject({}) { |h, c| h[c.name] = c; h }
         result_set.columns.each_with_index do |name, index|
           column_model = @column_models[name]
-          adapter = model.connection_config[:adapter]
+          adapter = model.connection_config[:adapter].to_sym
 
           # For AR 5.x type casting
           ar_type = (column_model.type.is_a?(::Symbol) ?
