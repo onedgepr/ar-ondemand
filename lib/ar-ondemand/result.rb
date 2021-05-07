@@ -9,10 +9,11 @@ module ActiveRecord
         @model = model
         @results = results
         @column_types = Hash[@model.columns.map { |x| [x.name, x] }]
+        adapter = @model.connection_config[:adapter]
 
         # For AR 5.x capture the types from registry to use for conversion
         @ar_types = defined?(ActiveRecord::Type.registry.lookup) ? Hash[@model.columns.map { |x|
-          [x.name, (x.type.is_a?(::Symbol) ?  ActiveRecord::Type.registry.lookup(x.type) : x.type)]
+          [x.name, (x.type.is_a?(::Symbol) ? ActiveRecord::Type.registry.lookup(x.type, adapter: adapter) : x.type)]
         }] : nil
 
         determine_type_cast_method

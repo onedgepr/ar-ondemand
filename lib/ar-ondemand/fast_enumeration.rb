@@ -6,10 +6,11 @@ module ActiveRecord
         @column_models = model.columns.inject({}) { |h, c| h[c.name] = c; h }
         result_set.columns.each_with_index do |name, index|
           column_model = @column_models[name]
+          adapter = model.connection_config[:adapter]
 
           # For AR 5.x type casting
           ar_type = (column_model.type.is_a?(::Symbol) ?
-                         ActiveRecord::Type.registry.lookup(column_model.type) :
+                         ActiveRecord::Type.registry.lookup(column_model.type, adapter: adapter) :
                          column_model.type) if column_model && defined?(ActiveRecord::Type.registry.lookup)
           self.define_singleton_method(name) do
             raise 'Not accessible outside of enumeration' if @row.nil?
