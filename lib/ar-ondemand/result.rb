@@ -9,7 +9,7 @@ module ActiveRecord
         @model = model
         @results = results
         @column_types = Hash[@model.columns.map { |x| [x.name, x] }]
-        adapter = @model.connection_config[:adapter].to_sym
+        adapter = @model.connection_db_config.configuration_hash[:adapter].to_sym
 
         # For AR 5.x capture the types from registry to use for conversion
         @ar_types = defined?(ActiveRecord::Type.registry.lookup) ? Hash[@model.columns.map { |x|
